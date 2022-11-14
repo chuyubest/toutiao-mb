@@ -62,7 +62,7 @@ export default {
       },
       rules: {
         mobile: [
-          { required: true, message: '手机号不能为空', trigger: 'OnBlur' },
+          { required: true, message: '手机号不能为空' },
           { pattern: /1[3|5|7|8]\d{9}/, message: '手机号格式错误' }
         ],
         code: [
@@ -85,8 +85,8 @@ export default {
       })
       // 3.调用接口发请求
       try {
-        const result = await login(this.user)
-        console.log('登陆成功', result)
+        const { data } = await login(this.user)
+        this.$store.commit('setUser', data.data)
         this.$toast.success('登录成功!')
       } catch (error) {
         if (error.response.status === 400) {
@@ -109,9 +109,8 @@ export default {
       this.isCountDownShow = true
       // 3.请求发送验证码
       try {
-        const result = await sendSms(this.user.mobile)
+        await sendSms(this.user.mobile)
         this.$toast.success('发送成功')
-        console.log('发送成功', result)
       } catch (error) {
         // 发送失败关闭倒计时
         this.isCountDownShow = false

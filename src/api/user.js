@@ -8,3 +8,10 @@ export function login (data) {
     data
   })
 }
+// 发送验证码:每个手机号 每分钟只发送一次
+export function sendSms (mobile) {
+  return request({
+    url: `/sms/codes/${mobile}`,
+    method: 'get'
+  })
+}

@@ -1,7 +1,9 @@
 <template>
   <div class="login-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-nav-bar" title="登录" />
+    <van-nav-bar class="page-nav-bar" title="登录" >
+      <van-icon slot="left" name="cross"  class="icon-cross" @click="$router.back()"/>
+    </van-nav-bar>
     <!-- form表单 -->
     <!-- 表单验证:给vanField配置rules验证规则 当表单提交的时候会自动触发 如果通过会触发submit事件 失败不会提交 -->
     <van-form @submit="onSubmit" ref="loginForm">
@@ -144,6 +146,9 @@ export default {
       background-color: #6db4fb;
       border: none;
     }
+  }
+  .icon-cross{
+    color:#fff
   }
 }
 </style>

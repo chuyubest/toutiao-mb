@@ -3,18 +3,18 @@
     <!-- 子路由出口 -->
     <router-view></router-view>
     <!-- 底部标签页 -->
-    <!-- route配置路由 -->
+    <!-- route开启路由模式 -->
     <van-tabbar  route>
       <van-tabbar-item to="/home">
-        <i class="iconfont icon-wode" slot="icon"></i>
+        <i class="iconfont icon-shouye" slot="icon"></i>
         <span>首页</span>
     </van-tabbar-item>
     <van-tabbar-item to="/question">
-        <i class="iconfont icon-wode" slot="icon"></i>
+        <i class="iconfont icon-wenda" slot="icon"></i>
         <span>问答</span>
     </van-tabbar-item>
     <van-tabbar-item to="/video">
-        <i class="iconfont icon-wode" slot="icon"></i>
+        <i class="iconfont icon-shipin" slot="icon"></i>
         <span>视频</span>
     </van-tabbar-item>
     <van-tabbar-item to="/my">

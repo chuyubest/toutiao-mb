@@ -27,7 +27,7 @@
           <span class="count">10</span>
           <span class="text">头条</span>
         </div>
-       <div class="data-item">
+        <div class="data-item">
           <span class="count">10</span>
           <span class="text">关注</span>
         </div>
@@ -41,6 +41,18 @@
         </div>
       </div>
     </div>
+
+    <!-- 宫格导航 -->
+    <van-grid :column-num="2" class="grid-nav">
+      <van-grid-item class="grid-item">
+        <i slot="icon" class="iconfont icon-shoucang"></i>
+        <span slot="text">收藏</span>
+      </van-grid-item>
+      <van-grid-item class="grid-item">
+        <i slot="icon" class="iconfont icon-lishi"></i>
+        <span slot="text">历史</span>
+      </van-grid-item>
+    </van-grid>
   </div>
 </template>
 
@@ -87,13 +99,13 @@ export default {
     .left {
       display: flex;
       align-items: center;
-      .avatar{
-        width:132px;
+      .avatar {
+        width: 132px;
         height: 132px;
         margin-right: 23px;
         border: 3px solid #fff;
       }
-      .name{
+      .name {
         font-size: 30px;
         color: #fff;
       }
@@ -107,14 +119,31 @@ export default {
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      color:#fff;
-      flex:1;
-      .count{
-        font-size:36px;
+      color: #fff;
+      flex: 1;
+      .count {
+        font-size: 36px;
       }
-      .text{
+      .text {
         font-size: 23px;
       }
+    }
+  }
+}
+.grid-nav {
+  .grid-item{
+    height: 141px;
+    i.iconfont {
+      font-size: 45px;
+    }
+    .icon-shoucang{
+      color:#eb5253
+    }
+    .icon-lishi{
+      color: #ff9d1d;
+    }
+    span{
+      font-size: 28px;
     }
   }
 }

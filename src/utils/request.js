@@ -11,6 +11,7 @@ request.interceptors.request.use(config => {
   if (store.state.user || store.state.user.token) {
     config.headers.Authorization = 'Bearer ' + store.state.user.token
   }
+  // 务必要返回config不然请求发不出去
   return config
 }, error => {
   // 请求出错 (还没有发出去)

@@ -22,6 +22,14 @@
       <van-tab title="标签 2">内容 2</van-tab>
       <van-tab title="标签 3">内容 3</van-tab>
       <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+      <div slot="nav-right" class="placeholder"></div>
+      <div slot="nav-right" class="hanmbuger-btn">
+        <i class="iconfont icon-gengduo"></i>
+      </div>
     </van-tabs>
   </div>
 </template>
@@ -53,27 +61,54 @@ export default {
       font-size: 32px;
     }
   }
-  /deep/ .channel-tabs{
-    .van-tab__wrap{
+  /deep/ .channel-tabs {
+    .van-tab__wrap {
       height: 82px;
     }
     .van-tab {
       font-size: 30px;
       min-width: 200px;
-      border-right: 1px solid #edeff3 ;
+      border-right: 1px solid #edeff3;
       color: #777;
     }
-    .van-tab--active{
+    .van-tab--active {
       color: #333;
     }
-    .van-tabs__nav{
+    .van-tabs__nav {
       padding-bottom: 0;
     }
-    .van-tabs__line{
+    .van-tabs__line {
       width: 31px;
       height: 6px;
       background-color: #3296fa;
       bottom: 8px;
+    }
+    .hanmbuger-btn {
+      position: fixed;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 66px;
+      height: 82px;
+      background-color: rgba(255, 255, 255, 0.902);
+      i.iconfont {
+        font-size: 33px;
+      }
+      &::before{
+        content:'';
+        position: absolute;
+        left: 0;
+        width:1px;
+        height: 100%;
+        background: url(~@/assets/gradient-gray-line.png);
+        background-size: contain;
+      }
+    }
+    .placeholder{
+      flex-shrink: 0;
+       width: 66px;
+       height: 82px;
     }
   }
 }

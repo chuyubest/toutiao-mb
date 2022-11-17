@@ -1,13 +1,7 @@
 <template>
   <div class="my-container">
-    <div class="header not-login" @click="$router.push('/login')">
-      <div class="login-btn">
-        <img class="mobile-img" src="~@/assets/mobile.png" alt="" />
-        <span class="text">登录/注册</span>
-      </div>
-    </div>
-
-    <div class="header user-info">
+     <!-- 已登录头部 -->
+    <div v-if="user" class="header user-info">
       <div class="base-info">
         <div class="left">
           <van-image
@@ -41,9 +35,16 @@
         </div>
       </div>
     </div>
+    <!-- 未登录头部 -->
+    <div v-else class="header not-login" @click="$router.push('/login')">
+      <div class="login-btn" @click="$router.push('/login')">
+        <img class="mobile-img" src="~@/assets/mobile.png" alt="" />
+        <span class="text">登录/注册</span>
+      </div>
+    </div>
 
     <!-- 宫格导航 -->
-    <van-grid :column-num="2" class="grid-nav">
+    <van-grid :column-num="2" class="grid-nav" clickable>
       <van-grid-item class="grid-item">
         <i slot="icon" class="iconfont icon-shoucang"></i>
         <span slot="text">收藏</span>
@@ -53,12 +54,33 @@
         <span slot="text">历史</span>
       </van-grid-item>
     </van-grid>
+
+    <van-cell class="news-inform" title="消息通知" is-link />
+    <van-cell title="小智同学" is-link />
+    <van-cell v-if="user" clickable class="logout-btn" title="退出登录" @click="logout" />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  name: 'My'
+  name: 'My',
+  computed: {
+    ...mapState(['user'])
+  },
+  methods: {
+    logout () {
+      // 弹窗提示用户是否要退出
+      this.$dialog.confirm({ title: '您确定要退出登录?' })
+        .then(() => {
+        // 点击确认按钮
+        // 清除用户的登陆状态
+        // 清除token以及本地存储的token
+          this.$store.commit('removeUser')
+        })
+        .catch()
+    }
+  }
 }
 </script>
 
@@ -131,20 +153,28 @@ export default {
   }
 }
 .grid-nav {
-  .grid-item{
+  .grid-item {
     height: 141px;
     i.iconfont {
       font-size: 45px;
     }
-    .icon-shoucang{
-      color:#eb5253
+    .icon-shoucang {
+      color: #eb5253;
     }
-    .icon-lishi{
+    .icon-lishi {
       color: #ff9d1d;
     }
-    span{
+    span {
       font-size: 28px;
     }
   }
+}
+.logout-btn {
+  margin-top: 5px;
+  color: #eb5253;
+  text-align: center;
+}
+.news-inform{
+  margin-top: 10px;
 }
 </style>

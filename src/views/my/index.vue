@@ -1,6 +1,6 @@
 <template>
   <div class="my-container">
-     <!-- 已登录头部 -->
+    <!-- 已登录头部 -->
     <div v-if="user" class="header user-info">
       <div class="base-info">
         <div class="left">
@@ -8,9 +8,9 @@
             round
             class="avatar"
             fit="cover"
-            src="https://img01.yzcdn.cn/vant/cat.jpeg"
+            :src="userInfo.photo"
           />
-          <span class="name">黑马头条号</span>
+          <span class="name">{{userInfo.name}}</span>
         </div>
         <div class="right">
           <van-button size="mini">编辑资料</van-button>
@@ -18,19 +18,19 @@
       </div>
       <div class="data-status">
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{userInfo.art_count}}</span>
           <span class="text">头条</span>
         </div>
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{userInfo.follow_count}}</span>
           <span class="text">关注</span>
         </div>
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{userInfo.fans_count}}</span>
           <span class="text">粉丝</span>
         </div>
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{userInfo.like_count}}</span>
           <span class="text">获赞</span>
         </div>
       </div>
@@ -57,28 +57,55 @@
 
     <van-cell class="news-inform" title="消息通知" is-link />
     <van-cell title="小智同学" is-link />
-    <van-cell v-if="user" clickable class="logout-btn" title="退出登录" @click="logout" />
+    <van-cell
+      v-if="user"
+      clickable
+      class="logout-btn"
+      title="退出登录"
+      @click="logout"
+    />
   </div>
 </template>
 
 <script>
+import { getUserInfo } from '@/api/user'
 import { mapState } from 'vuex'
 export default {
   name: 'My',
+  data () {
+    return {
+      userInfo: null
+    }
+  },
   computed: {
     ...mapState(['user'])
+  },
+  created () {
+    if (this.user) { // 用户登陆了才请求
+      this.getUserInfo()
+    }
   },
   methods: {
     logout () {
       // 弹窗提示用户是否要退出
-      this.$dialog.confirm({ title: '您确定要退出登录?' })
+      this.$dialog
+        .confirm({ title: '您确定要退出登录?' })
         .then(() => {
-        // 点击确认按钮
-        // 清除用户的登陆状态
-        // 清除token以及本地存储的token
+          // 点击确认按钮
+          // 清除用户的登陆状态
+          // 清除token以及本地存储的token
           this.$store.commit('removeUser')
         })
         .catch()
+    },
+    async getUserInfo () {
+      try {
+        const result = await getUserInfo()
+        this.userInfo = result
+        console.log(result)
+      } catch (error) {
+        this.$toast('获取数据失败,请稍后再试')
+      }
     }
   }
 }
@@ -174,7 +201,7 @@ export default {
   color: #eb5253;
   text-align: center;
 }
-.news-inform{
+.news-inform {
   margin-top: 10px;
 }
 </style>

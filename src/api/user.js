@@ -15,3 +15,10 @@ export function sendSms (mobile) {
     method: 'get'
   })
 }
+// 获取用户自己信息
+export function getUserInfo () {
+  return request({
+    url: '/user',
+    method: 'get'
+  })
+}

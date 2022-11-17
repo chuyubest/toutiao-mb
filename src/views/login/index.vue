@@ -87,8 +87,8 @@ export default {
       })
       // 3.调用接口发请求
       try {
-        const { data } = await login(this.user)
-        this.$store.commit('setUser', data.data)
+        const result = await login(this.user)
+        this.$store.commit('setUser', result)
         this.$toast.success('登录成功!')
         // 跳转到之前页面
         this.$router.back()
@@ -98,6 +98,7 @@ export default {
         } else {
           this.$toast.fail('登录失败,请稍后重试')
         }
+        // console.log(error);
       }
       // 4.根据响应结果处理后续请求
     },

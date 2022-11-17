@@ -8,7 +8,7 @@ const request = axios.create({
 })
 // 请求拦截器
 request.interceptors.request.use(config => {
-  if (store.state.user || store.state.user.token) {
+  if (store.state.user) {
     config.headers.Authorization = 'Bearer ' + store.state.user.token
   }
   // 务必要返回config不然请求发不出去

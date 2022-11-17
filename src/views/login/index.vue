@@ -93,12 +93,12 @@ export default {
         // 跳转到之前页面
         this.$router.back()
       } catch (error) {
-        if (error.response.status === 400) {
-          this.$toast.fail('手机号或验证码错误')
-        } else {
-          this.$toast.fail('登录失败,请稍后重试')
-        }
-        // console.log(error);
+        // if (error.response.status === 400) {
+        //   this.$toast.fail('手机号或验证码错误')
+        // } else {
+        //   this.$toast.fail('登录失败,请稍后重试')
+        // }
+        console.log(error)
       }
       // 4.根据响应结果处理后续请求
     },

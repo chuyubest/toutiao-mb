@@ -22,3 +22,10 @@ export function getUserInfo () {
     method: 'get'
   })
 }
+// 获取用户频道列表
+export function getUserChannels () {
+  return request({
+    url: '/user/channels',
+    method: 'get'
+  })
+}

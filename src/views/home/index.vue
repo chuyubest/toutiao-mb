@@ -18,14 +18,13 @@
     通过 swipeable 属性可以开启滑动切换标签页。
     -->
     <van-tabs class="channel-tabs" v-model="active" animated swipeable>
-      <van-tab title="标签 1">内容 1</van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab
+      v-for="channel in channelsList"
+      :title="channel.name"
+      :key="channel.id"
+      >
+        {{channel.name}}的内容
+      </van-tab>
       <div slot="nav-right" class="placeholder"></div>
       <div slot="nav-right" class="hanmbuger-btn">
         <i class="iconfont icon-gengduo"></i>
@@ -35,11 +34,27 @@
 </template>
 
 <script>
+import { getUserChannels } from '@/api/user'
 export default {
   name: 'Home',
   data () {
     return {
-      active: 0
+      active: 0,
+      channelsList: []// 频道列表
+    }
+  },
+  created () {
+    this.getUserChannels()
+  },
+  methods: {
+    async getUserChannels () {
+      try {
+        const result = await getUserChannels()
+        console.log(result)
+        this.channelsList = result.channels
+      } catch (error) {
+        this.$toast('获取频道列表数据失败')
+      }
     }
   }
 }

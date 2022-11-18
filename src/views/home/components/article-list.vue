@@ -117,5 +117,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.article-list{
+    // 百分比单位相对于父元素
+    // height: 100%;
+    height:79vh ;
+    overflow-y: auto;
+}
 </style>

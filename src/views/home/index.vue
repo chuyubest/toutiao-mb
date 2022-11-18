@@ -23,7 +23,8 @@
       :title="channel.name"
       :key="channel.id"
       >
-        {{channel.name}}的内容
+      <!-- 文章列表 -->
+        <article-list :channel="channel"></article-list>
       </van-tab>
       <div slot="nav-right" class="placeholder"></div>
       <div slot="nav-right" class="hanmbuger-btn">
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+import ArticleList from './components/article-list.vue'
 import { getUserChannels } from '@/api/user'
 export default {
   name: 'Home',
@@ -42,6 +44,9 @@ export default {
       active: 0,
       channelsList: []// 频道列表
     }
+  },
+  components: {
+    ArticleList
   },
   created () {
     this.getUserChannels()

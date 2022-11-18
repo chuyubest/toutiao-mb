@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-nav-bar">
+    <van-nav-bar class="page-nav-bar" fixed>
       <van-button
         class="search-btn"
         slot="title"
@@ -19,11 +19,11 @@
     -->
     <van-tabs class="channel-tabs" v-model="active" animated swipeable>
       <van-tab
-      v-for="channel in channelsList"
-      :title="channel.name"
-      :key="channel.id"
+        v-for="channel in channelsList"
+        :title="channel.name"
+        :key="channel.id"
       >
-      <!-- 文章列表 -->
+        <!-- 文章列表 -->
         <article-list :channel="channel"></article-list>
       </van-tab>
       <div slot="nav-right" class="placeholder"></div>
@@ -35,38 +35,39 @@
 </template>
 
 <script>
-import ArticleList from './components/article-list.vue'
-import { getUserChannels } from '@/api/user'
+import ArticleList from "./components/article-list.vue";
+import { getUserChannels } from "@/api/user";
 export default {
-  name: 'Home',
-  data () {
+  name: "Home",
+  data() {
     return {
       active: 0,
-      channelsList: []// 频道列表
-    }
+      channelsList: [], // 频道列表
+    };
   },
   components: {
-    ArticleList
+    ArticleList,
   },
-  created () {
-    this.getUserChannels()
+  created() {
+    this.getUserChannels();
   },
   methods: {
-    async getUserChannels () {
+    async getUserChannels() {
       try {
-        const result = await getUserChannels()
-        console.log(result)
-        this.channelsList = result.channels
+        const result = await getUserChannels();
+        console.log(result);
+        this.channelsList = result.channels;
       } catch (error) {
-        this.$toast('获取频道列表数据失败')
+        this.$toast("获取频道列表数据失败");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .home-container {
+  padding-top:174px;
   padding-bottom: 100px;
   .van-nav-bar__title {
     max-width: unset !important;
@@ -82,9 +83,14 @@ export default {
       font-size: 32px;
     }
   }
-  /deep/ .channel-tabs {
-    .van-tab__wrap {
+   /deep/.channel-tabs {
+    .van-tabs__wrap {
       height: 82px;
+      position: fixed;
+      top: 92px;
+      left: 0;
+      right: 0;
+      z-index:1
     }
     .van-tab {
       font-size: 30px;
@@ -116,20 +122,20 @@ export default {
       i.iconfont {
         font-size: 33px;
       }
-      &::before{
-        content:'';
+      &::before {
+        content: "";
         position: absolute;
         left: 0;
-        width:1px;
+        width: 1px;
         height: 100%;
         background: url(~@/assets/gradient-gray-line.png);
         background-size: contain;
       }
     }
-    .placeholder{
+    .placeholder {
       flex-shrink: 0;
-       width: 66px;
-       height: 82px;
+      width: 66px;
+      height: 82px;
     }
   }
 }

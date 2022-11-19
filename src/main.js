@@ -8,7 +8,8 @@ import './styles/index.less'
 import Vant from 'vant'
 // 加载vant全局样式
 import 'vant/lib/index.css'
-
+//加载dayjs 初始化配置
+import '@/utils/dayjs'
 // 动态设置rem基准值
 import 'amfe-flexible'
 

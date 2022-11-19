@@ -1,7 +1,7 @@
 <template>
   <van-cell class="article-item">
     <div slot="title" class="title van-multi-ellipsis--l2">
-      {{ article.title }}
+      {{ article.title  }}
     </div>
     <div slot="label">
       <div v-if="article.cover.type === 3" class="cover-wrap">
@@ -12,7 +12,7 @@
       <div class="label-info-wrap">
         <span>{{ article.aut_name }} </span>
         <span>{{ article.comm_count }}评价 </span>
-        <span>{{ article.pubdate }}</span>
+        <span>{{ article.pubdate |relativeTime }}</span>
       </div>
     </div>
       <van-image

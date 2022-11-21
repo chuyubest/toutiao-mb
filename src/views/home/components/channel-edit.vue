@@ -9,25 +9,31 @@
         round
         size="mini"
         slot="default"
+        @click="isEdit = !isEdit"
       >
-        编辑
+        {{isEdit ? '完成':'编辑'}}
       </van-button>
     </van-cell>
     <!-- 宫格菜单 我的频道 -->
     <van-grid class="my-channel" :gutter="10">
       <van-grid-item
         class="grid-item"
-        v-for="(channel,index) in myChannels"
+        v-for="(channel, index) in myChannels"
         :key="channel.id"
-        icon="clear"
       >
-      <!-- v-bind:class
+      <van-icon slot="icon" v-show="isEdit&&!fixChannels.includes(channel.id)" name="clear"></van-icon>
+        <!-- v-bind:class
             一个对象:key表示要作用的css类名
             value:一个返回布尔值额表达式
             true:使用该类名
             false:不使用
        -->
-      <span slot="text" class="text" :class="{active:index===activeIndex}">{{channel.name}}</span>
+        <span
+          slot="text"
+          class="text"
+          :class="{ active: index === activeIndex }"
+          >{{ channel.name }}</span
+        >
       </van-grid-item>
     </van-grid>
     <!-- 宫格菜单 频道推荐 -->
@@ -37,10 +43,11 @@
     <van-grid :gutter="10" direction="horizontal">
       <van-grid-item
         class="grid-item"
-        v-for="recommendChannel in recommendList"
         icon="plus"
+        v-for="recommendChannel in recommendList"
         :key="recommendChannel.id"
         :text="recommendChannel.name"
+        @click="addToMyChannel(recommendChannel)"
       >
       </van-grid-item>
     </van-grid>
@@ -48,44 +55,50 @@
 </template>
 
 <script>
-import {getAllChannels} from '@/api/channel'
+import { getAllChannels } from "@/api/channel";
 export default {
   name: "ChannelEdit",
   props: {
     myChannels: {
       type: Array,
-      required:true
+      required: true,
     },
-    activeIndex:{
-        type:Number,
-        required:true
-    }
+    activeIndex: {
+      type: Number,
+      required: true,
+    },
   },
-  data(){
+  data() {
     return {
-        allChannels:[]
+      allChannels: [],
+      isEdit:false,//控制移除频道关闭图标的显示状态
+      fixChannels:[0],//固定频道 不允许删除
+    };
+  },
+  created() {
+    this.getAllChannels();
+  },
+  computed: {
+    // 当依赖数据发送变化 计算属性会重新执行
+    //推荐频道列表为全部频道列表-我的频道
+    recommendList() {
+      return this.allChannels.filter((channel) => {
+        return !this.myChannels.find((myChannel) => {
+          return channel.id === myChannel.id;
+        });
+      });
+    },
+  },
+  methods: {
+    async getAllChannels() {
+      const { channels } = await getAllChannels();
+      this.allChannels = channels;
+      console.log(channels);
+    },
+    addToMyChannel(channel){
+        this.myChannels.push(channel)
     }
   },
-  created(){
-    this.getAllChannels()
-  },
-  computed:{
-     //推荐频道列表为全部频道列表-我的频道
-     recommendList(){
-        return this.allChannels.filter(channel=>{
-            return !this.myChannels.find(myChannel=>{
-                return channel.id === myChannel.id
-            })
-        })
-     }
-  },
-  methods:{
-    async getAllChannels(){
-    const {channels} =   await getAllChannels()
-    this.allChannels = channels
-    console.log(channels);
-    },
-  }
 };
 </script>
 
@@ -109,13 +122,17 @@ export default {
     /deep/.van-grid-item__content {
       white-space: nowrap;
       background-color: #f4f5f6;
-      .van-grid-item__text,.text {
+      .van-grid-item__icon-wrapper{
+        position:unset
+      }
+      .van-grid-item__text,
+      .text {
         font-size: 28px;
         color: #222;
         margin-top: 0;
       }
       .active {
-        color:red
+        color: red;
       }
       .van-grid-item__icon {
         font-size: 28px;
@@ -126,6 +143,7 @@ export default {
         top: -5px;
         color: #cacaca;
         z-index: 3;
+        font-size: 28px;
       }
     }
   }

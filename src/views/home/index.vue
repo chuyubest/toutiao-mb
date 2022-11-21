@@ -24,7 +24,7 @@
         :key="channel.id"
       >
         <!-- 文章列表 -->
-        <article-list :channel="channel"></article-list>
+        <article-list :channel="channel" ></article-list>
       </van-tab>
       <div slot="nav-right" class="placeholder"></div>
       <div slot="nav-right" class="hanmbuger-btn" @click="isShowEdit = true">
@@ -39,7 +39,7 @@
       close-icon-position="top-left"
       :style="{ height: '100%' }"
     >
-    <ChannelEdit />
+    <ChannelEdit :myChannels="channelsList" :activeIndex="active"/>
     </van-popup>
   </div>
 </template>

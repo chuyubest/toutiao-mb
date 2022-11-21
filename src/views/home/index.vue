@@ -27,26 +27,39 @@
         <article-list :channel="channel"></article-list>
       </van-tab>
       <div slot="nav-right" class="placeholder"></div>
-      <div slot="nav-right" class="hanmbuger-btn">
+      <div slot="nav-right" class="hanmbuger-btn" @click="isShowEdit = true">
         <i class="iconfont icon-gengduo"></i>
       </div>
     </van-tabs>
+    <!-- 频道编辑弹出层 -->
+    <van-popup
+      v-model="isShowEdit"
+      closeable
+      position="bottom"
+      close-icon-position="top-left"
+      :style="{ height: '100%' }"
+    >
+    <ChannelEdit />
+    </van-popup>
   </div>
 </template>
 
 <script>
 import ArticleList from "./components/article-list.vue";
 import { getUserChannels } from "@/api/user";
+import ChannelEdit from './components/channel-edit.vue'
 export default {
   name: "Home",
   data() {
     return {
       active: 0,
       channelsList: [], // 频道列表
+      isShowEdit:false
     };
   },
   components: {
     ArticleList,
+    ChannelEdit
   },
   created() {
     this.getUserChannels();
@@ -67,7 +80,7 @@ export default {
 
 <style lang="less" scoped>
 .home-container {
-  padding-top:174px;
+  padding-top: 174px;
   padding-bottom: 100px;
   .van-nav-bar__title {
     max-width: unset !important;
@@ -83,14 +96,14 @@ export default {
       font-size: 32px;
     }
   }
-   /deep/.channel-tabs {
+  /deep/.channel-tabs {
     .van-tabs__wrap {
       height: 82px;
       position: fixed;
       top: 92px;
       left: 0;
       right: 0;
-      z-index:1
+      z-index: 1;
     }
     .van-tab {
       font-size: 30px;

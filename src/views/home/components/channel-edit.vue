@@ -37,18 +37,18 @@
     <van-grid :gutter="10" direction="horizontal">
       <van-grid-item
         class="grid-item"
-        v-for="value in 8"
+        v-for="recommendChannel in recommendList"
         icon="plus"
-        :key="value"
-        text="文字"
+        :key="recommendChannel.id"
+        :text="recommendChannel.name"
       >
-        
       </van-grid-item>
     </van-grid>
   </div>
 </template>
 
 <script>
+import {getAllChannels} from '@/api/channel'
 export default {
   name: "ChannelEdit",
   props: {
@@ -61,6 +61,31 @@ export default {
         required:true
     }
   },
+  data(){
+    return {
+        allChannels:[]
+    }
+  },
+  created(){
+    this.getAllChannels()
+  },
+  computed:{
+     //推荐频道列表为全部频道列表-我的频道
+     recommendList(){
+        return this.allChannels.filter(channel=>{
+            return !this.myChannels.find(myChannel=>{
+                return channel.id === myChannel.id
+            })
+        })
+     }
+  },
+  methods:{
+    async getAllChannels(){
+    const {channels} =   await getAllChannels()
+    this.allChannels = channels
+    console.log(channels);
+    },
+  }
 };
 </script>
 

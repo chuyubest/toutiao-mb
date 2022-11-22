@@ -20,6 +20,7 @@
         class="grid-item"
         v-for="(channel, index) in myChannels"
         :key="channel.id"
+        @click="changeOrDelMyChannel(channel,index)"
       >
       <van-icon slot="icon" v-show="isEdit&&!fixChannels.includes(channel.id)" name="clear"></van-icon>
         <!-- v-bind:class
@@ -95,8 +96,16 @@ export default {
       this.allChannels = channels;
       console.log(channels);
     },
+    //将推荐频道添加到我的频道
     addToMyChannel(channel){
         this.myChannels.push(channel)
+    },
+    //切换或删除频道
+    changeOrDelMyChannel(myChannel,index){
+      if(!this.isEdit){//切换频道
+      //将索引值传给父组件
+        this.$emit('changeMyChannel',index)
+      }
     }
   },
 };

@@ -39,7 +39,7 @@
       close-icon-position="top-left"
       :style="{ height: '100%' }"
     >
-    <ChannelEdit :myChannels="channelsList" :activeIndex="active"/>
+    <ChannelEdit :myChannels="channelsList" :activeIndex="active" @changeMyChannel="changeMyChannel"/>
     </van-popup>
   </div>
 </template>
@@ -74,6 +74,14 @@ export default {
         this.$toast("获取频道列表数据失败");
       }
     },
+    //进行频道的切换
+    changeMyChannel(index){
+      //父组件接收的子组件传递过来的索引值进行当前标签页的切换
+      //先关闭弹窗
+      this.isShowEdit = false
+      this.active = index
+      console.log(index);
+    }
   },
 };
 </script>

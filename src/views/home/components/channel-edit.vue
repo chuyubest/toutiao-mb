@@ -11,7 +11,7 @@
         slot="default"
         @click="isEdit = !isEdit"
       >
-        {{isEdit ? '完成':'编辑'}}
+        {{ isEdit ? "完成" : "编辑" }}
       </van-button>
     </van-cell>
     <!-- 宫格菜单 我的频道 -->
@@ -20,9 +20,13 @@
         class="grid-item"
         v-for="(channel, index) in myChannels"
         :key="channel.id"
-        @click="changeOrDelMyChannel(channel,index)"
+        @click="changeOrDelMyChannel(channel, index)"
       >
-      <van-icon slot="icon" v-show="isEdit&&!fixChannels.includes(channel.id)" name="clear"></van-icon>
+        <van-icon
+          slot="icon"
+          v-show="isEdit && !fixChannels.includes(channel.id)"
+          name="clear"
+        ></van-icon>
         <!-- v-bind:class
             一个对象:key表示要作用的css类名
             value:一个返回布尔值额表达式
@@ -72,8 +76,8 @@ export default {
   data() {
     return {
       allChannels: [],
-      isEdit:false,//控制移除频道关闭图标的显示状态
-      fixChannels:[0],//固定频道 不允许删除
+      isEdit: false, //控制移除频道关闭图标的显示状态
+      fixChannels: [0], //固定频道 不允许删除
     };
   },
   created() {
@@ -97,16 +101,28 @@ export default {
       console.log(channels);
     },
     //将推荐频道添加到我的频道
-    addToMyChannel(channel){
-        this.myChannels.push(channel)
+    addToMyChannel(channel) {
+      this.myChannels.push(channel);
     },
     //切换或删除频道
-    changeOrDelMyChannel(myChannel,index){
-      if(!this.isEdit){//切换频道
-      //将索引值传给父组件
-        this.$emit('changeMyChannel',index)
+    changeOrDelMyChannel(myChannel, index) {
+      if (!this.isEdit) {
+        //切换频道
+        //将索引值传给父组件
+        this.$emit("changeMyChannel", index, false);
+      } else {
+        //删除频道
+        //如果是固定频道则不删除
+        if (this.fixChannels.indexOf(myChannel.id) !== -1) {
+          console.log(myChannel.id);
+          return;
+        }
+        if (index <= this.activeIndex) {
+          this.$emit("changeMyChannel", this.activeIndex - 1, true);
+        }
+        this.myChannels.splice(index, 1);
       }
-    }
+    },
   },
 };
 </script>
@@ -131,8 +147,8 @@ export default {
     /deep/.van-grid-item__content {
       white-space: nowrap;
       background-color: #f4f5f6;
-      .van-grid-item__icon-wrapper{
-        position:unset
+      .van-grid-item__icon-wrapper {
+        position: unset;
       }
       .van-grid-item__text,
       .text {

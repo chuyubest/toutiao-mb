@@ -75,12 +75,11 @@ export default {
       }
     },
     //进行频道的切换
-    changeMyChannel(index){
+    changeMyChannel(index,isShowEdit=true){
       //父组件接收的子组件传递过来的索引值进行当前标签页的切换
       //先关闭弹窗
-      this.isShowEdit = false
+      this.isShowEdit = isShowEdit
       this.active = index
-      console.log(index);
     }
   },
 };

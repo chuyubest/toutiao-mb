@@ -104,7 +104,6 @@ export default {
     async getAllChannels() {
       const { channels } = await getAllChannels();
       this.allChannels = channels;
-      console.log(channels);
     },
     //将推荐频道添加到我的频道
     async addToMyChannel(channel) {

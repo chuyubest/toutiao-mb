@@ -7,7 +7,6 @@ export function getAllChannels() {
   })
 }
 //更新我的频道
-
 export function updateMyChannel(channel) {
   return request({
     url: '/user/channels',
@@ -16,5 +15,11 @@ export function updateMyChannel(channel) {
         channels:[channel]
     }
   })
-
 }
+  //删除我的频道
+  export function deleteMyChannel(channel){
+    return request({
+        url:`/user/channels/${channel.id}`,
+        method:'delete'
+    })
+  }

@@ -60,7 +60,11 @@
 </template>
 
 <script>
-import { getAllChannels, updateMyChannel } from "@/api/channel";
+import {
+  getAllChannels,
+  updateMyChannel,
+  deleteMyChannel,
+} from "@/api/channel";
 import { mapState } from "vuex";
 export default {
   name: "ChannelEdit",
@@ -85,16 +89,16 @@ export default {
     this.getAllChannels();
   },
   computed: {
-     ...mapState(['user']),
+    ...mapState(["user"]),
     // 当依赖数据发送变化 计算属性会重新执行
     //推荐频道列表为全部频道列表-我的频道
     recommendList() {
       return this.allChannels.filter((channel) => {
         return !this.myChannels.find((myChannel) => {
           return channel.id === myChannel.id;
-        })
-      })
-    }
+        });
+      });
+    },
   },
   methods: {
     async getAllChannels() {
@@ -110,15 +114,15 @@ export default {
       if (this.user) {
         try {
           await updateMyChannel({
-            id:channel.id,//当前选中的频道id
-            seq:this.myChannels.length  //频道排序
+            id: channel.id, //当前选中的频道id
+            seq: this.myChannels.length, //频道排序
           });
         } catch (error) {
           this.$toast("保存失败,请重试");
         }
       } else {
         //如果用户未登录 则将我的频道存储在本地
-        localStorage.setItem('MY_CHANNEL',JSON.stringify(this.myChannels))
+        localStorage.setItem("MY_CHANNEL", JSON.stringify(this.myChannels));
       }
     },
     //切换或删除频道
@@ -140,6 +144,22 @@ export default {
         }
         //3.删除频道项
         this.myChannels.splice(index, 1);
+        //数据持久化
+        this.deleMyChannel(myChannel);
+      }
+    },
+    //删除频道项持久化
+    async deleMyChannel(channel) {
+      try {
+        if (this.user) {
+          //如果用户登录,则更新到服务器
+          await deleteMyChannel(channel);
+        } else {
+          //未登录存储在本地
+          localStorage.setItem("MY_CHANNEL", JSON.stringify(this.myChannels));
+        }
+      } catch (error) {
+        this.$toast("操作失败,请稍后重试");
       }
     },
   },

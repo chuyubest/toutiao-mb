@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import { getAllChannels } from "@/api/channel";
+import { getAllChannels, updateMyChannel } from "@/api/channel";
+import { mapState } from "vuex";
 export default {
   name: "ChannelEdit",
   props: {
@@ -84,15 +85,16 @@ export default {
     this.getAllChannels();
   },
   computed: {
+     ...mapState(['user']),
     // 当依赖数据发送变化 计算属性会重新执行
     //推荐频道列表为全部频道列表-我的频道
     recommendList() {
       return this.allChannels.filter((channel) => {
         return !this.myChannels.find((myChannel) => {
           return channel.id === myChannel.id;
-        });
-      });
-    },
+        })
+      })
+    }
   },
   methods: {
     async getAllChannels() {
@@ -101,8 +103,23 @@ export default {
       console.log(channels);
     },
     //将推荐频道添加到我的频道
-    addToMyChannel(channel) {
+    async addToMyChannel(channel) {
       this.myChannels.push(channel);
+      // 数据持久化处理
+      // 如果用户登录了则发请求存储在服务器上
+      if (this.user) {
+        try {
+          await updateMyChannel({
+            id:channel.id,//当前选中的频道id
+            seq:this.myChannels.length  //频道排序
+          });
+        } catch (error) {
+          this.$toast("保存失败,请重试");
+        }
+      } else {
+        //如果用户未登录 则将我的频道存储在本地
+        localStorage.setItem('MY_CHANNEL',JSON.stringify(this.myChannels))
+      }
     },
     //切换或删除频道
     changeOrDelMyChannel(myChannel, index) {
@@ -112,14 +129,16 @@ export default {
         this.$emit("changeMyChannel", index, false);
       } else {
         //删除频道
-        //如果是固定频道则不删除
+        //1.如果是固定频道则不删除
         if (this.fixChannels.indexOf(myChannel.id) !== -1) {
           console.log(myChannel.id);
           return;
         }
+        // 2.如果删除的是激活频道之前的频道项
         if (index <= this.activeIndex) {
           this.$emit("changeMyChannel", this.activeIndex - 1, true);
         }
+        //3.删除频道项
         this.myChannels.splice(index, 1);
       }
     },

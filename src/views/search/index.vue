@@ -11,16 +11,30 @@
         @cancel="onCancel"
       />
     </form>
+    <!-- 三部分:搜索历史记录 -->
+    <SearchHistory />
+    <!-- 联想建议 -->
+    <Suggestion />
+    <!-- 搜索结果 -->
+    <SearchResult></SearchResult>
   </div>
 </template>
 
 <script>
+import SearchResult from "./components/search-result.vue";
+import Suggestion from "./components/suggestion.vue";
+import SearchHistory from "./components/search-history.vue";
 export default {
   name: "Search",
   data() {
     return {
       searchText: "",
     };
+  },
+  components: {
+    SearchResult,
+    Suggestion,
+    SearchHistory
   },
   methods: {
     onSearch(val) {

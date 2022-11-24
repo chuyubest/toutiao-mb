@@ -10,6 +10,7 @@
 
 <script>
 import {getSearchSuggestion} from '@/api/search'
+import {debounce} from 'lodash'
 export default {
     name:'Suggestion',
     data(){
@@ -25,10 +26,17 @@ export default {
     },
     watch:{
         searchText:{
-            handler(newVal){
+            // handler(newVal){
+            //     this.getSearchSuggestion(newVal)
+            //     console.log(newVal);
+            // },
+            //debounce两个参数
+            //1.需要防抖的操作
+            //2.延迟时间
+            handler:debounce(function(newVal){
                 this.getSearchSuggestion(newVal)
-                console.log(newVal);
-            },
+                console.log(newVal)
+            },200),
             immediate:true,//第一次监听就执行
         }
     },

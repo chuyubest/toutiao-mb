@@ -9,14 +9,17 @@
         placeholder="请输入搜索关键词"
         @search="onSearch"
         @cancel="onCancel"
+        @focus="isResultShow = false"
       />
     </form>
+        <!-- 搜索结果 -->
+    <SearchResult v-if="isResultShow"></SearchResult>
+        <!-- 联想建议 -->
+    <Suggestion v-else-if="searchText" :searchText="searchText"/>
     <!-- 三部分:搜索历史记录 -->
-    <SearchHistory />
-    <!-- 联想建议 -->
-    <Suggestion />
-    <!-- 搜索结果 -->
-    <SearchResult></SearchResult>
+    <SearchHistory v-else/>
+
+
   </div>
 </template>
 
@@ -29,6 +32,7 @@ export default {
   data() {
     return {
       searchText: "",
+      isResultShow:false
     };
   },
   components: {
@@ -39,6 +43,7 @@ export default {
   methods: {
     onSearch(val) {
       console.log(val);
+      this.isResultShow = true
     },
     onCancel() {
       this.$router.back();

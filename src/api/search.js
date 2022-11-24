@@ -11,3 +11,12 @@ export function getSearchSuggestion(q){
         }
     })
 }
+
+//获取搜索结果
+export function getSearchResult(params){
+    return request({
+        url:'search',
+        method:'get',
+        params
+    })
+}

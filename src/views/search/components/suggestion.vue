@@ -3,6 +3,7 @@
     <van-cell v-for="(suggestion,index) in suggestions" 
      icon="search" 
     :key="index"
+    @click="$emit('search',suggestion)"
     >
         <span slot="title" v-html="highlight(suggestion)"></span>
     </van-cell>

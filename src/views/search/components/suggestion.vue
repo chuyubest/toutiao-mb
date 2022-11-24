@@ -1,9 +1,11 @@
 <template>
   <div class="suggestion">
     <van-cell v-for="(suggestion,index) in suggestions" 
-    :title="suggestion" icon="search" 
+     icon="search" 
     :key="index"
-    />
+    >
+        <span slot="title" v-html="highlight(suggestion)"></span>
+    </van-cell>
 
   </div>
 </template>
@@ -49,6 +51,13 @@ export default {
             }catch(error){
                 this.$toast('数据获取失败,请稍后重试!')
             }
+        },
+        //搜索关键字高亮
+        highlight(str){
+            const reg = new RegExp(this.searchText,'gi')
+            const result = str.replaceAll(reg,`<span style="color:#3296fa">${this.searchText}</span>`)
+            // console.log(result);
+            return result
         }
     }
 }

@@ -40,6 +40,11 @@ const routes = [{
     name: 'search',
     component: () => import('@/views/search')
   },
+  {
+    path: '/article/:articleId',//动态路由
+    name: 'article',
+    component: () => import('@/views/article')
+  },
 ]
 
 const router = new VueRouter({

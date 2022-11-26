@@ -1,5 +1,11 @@
 <template>
-  <van-cell class="article-item">
+<!-- cell单元格的to属性和router-link导航组件功能一样 -->
+  <van-cell  class="article-item" 
+   :to="{
+    name:'article',
+    params:{articleId:article.art_id}
+   }"
+    >
     <div slot="title" class="title van-multi-ellipsis--l2">
       {{ article.title  }}
     </div>

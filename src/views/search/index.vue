@@ -35,13 +35,18 @@ export default {
     return {
       searchText: "",
       isResultShow: false,
-      searchHistory: [], //存储历史记录
+      searchHistory: JSON.parse(localStorage.getItem('SEARCH_HISTORY'))|| [], //存储历史记录
     };
   },
   components: {
     SearchResult,
     Suggestion,
     SearchHistory,
+  },
+  watch:{
+    searchHistory(newVal){
+      localStorage.setItem('SEARCH_HISTORY',JSON.stringify(newVal))
+    }
   },
   methods: {
     onSearch(val) {

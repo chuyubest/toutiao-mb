@@ -5,6 +5,8 @@
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
+      :error.sync="error"
+      error-text="加载失败,请重试"
     >
       <van-cell
         v-for="(article, index) in list"
@@ -25,6 +27,7 @@ export default {
       loading: false,
       finished: false,
       page: 1, //当前页码
+      error:false,//控制加载失败的提示
     };
   },
   props: {
@@ -42,6 +45,10 @@ export default {
           page: this.page, //当前页码
           per_page: 20, //每页数据量
         });
+        //测试失败情况
+        if(Math.random()>0.5){
+            JSON.parse('sss')
+        }
         //2.将数据添加到数组列表中
         this.list.push(...results);
         //3.将本次加载的loading关闭
@@ -53,7 +60,8 @@ export default {
           this.finished = true;
         }
       } catch (error) {
-        this.$toast("数据获取失败,请稍后重试");
+        this.error = true
+        this.loading = false
       }
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="search-container">
     <!-- 顶部搜索栏 -->
-    <form action="/">
+    <form action="/" class="search-form">
       <van-search
         v-model="searchText"
         show-action
@@ -12,14 +12,16 @@
         @focus="isResultShow = false"
       />
     </form>
-        <!-- 搜索结果 -->
+    <!-- 搜索结果 -->
     <SearchResult v-if="isResultShow" :searchText="searchText"></SearchResult>
-        <!-- 联想建议 -->
-    <Suggestion v-else-if="searchText" :searchText="searchText" @search="onSearch"/>
+    <!-- 联想建议 -->
+    <Suggestion
+      v-else-if="searchText"
+      :searchText="searchText"
+      @search="onSearch"
+    />
     <!-- 三部分:搜索历史记录 -->
-    <SearchHistory v-else/>
-
-
+    <SearchHistory v-else :searchHistory="searchHistory"/>
   </div>
 </template>
 
@@ -32,19 +34,28 @@ export default {
   data() {
     return {
       searchText: "",
-      isResultShow:false
+      isResultShow: false,
+      searchHistory: [], //存储历史记录
     };
   },
   components: {
     SearchResult,
     Suggestion,
-    SearchHistory
+    SearchHistory,
   },
   methods: {
     onSearch(val) {
-      this.searchText = val
-      console.log(val);
-      this.isResultShow = true
+      //更新文本框内容
+      this.searchText = val;
+      //存储搜索历史记录
+      //要求:不要有重复历史记录
+      const index = this.searchHistory.indexOf(val)
+      if(index!==-1){
+        this.searchHistory.splice(index,1)
+      }
+      this.searchHistory.unshift(val)
+      //渲染搜索结果
+      this.isResultShow = true;
     },
     onCancel() {
       this.$router.back();
@@ -55,8 +66,16 @@ export default {
 
 <style lang="less" scoped>
 .search-container {
+  padding-top: 108px;
   .van-search__action {
     color: #fff;
+  }
+  .search-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
   }
 }
 </style>

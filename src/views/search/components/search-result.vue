@@ -46,9 +46,9 @@ export default {
           per_page: 20, //每页数据量
         });
         //测试失败情况
-        if(Math.random()>0.5){
-            JSON.parse('sss')
-        }
+        // if(Math.random()>0.5){
+        //     JSON.parse('sss')
+        // }
         //2.将数据添加到数组列表中
         this.list.push(...results);
         //3.将本次加载的loading关闭

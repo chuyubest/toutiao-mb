@@ -9,3 +9,10 @@ export function getArticleList (params) {
     params
   })
 }
+//根据id获取文章详情
+export function getArticleDetailById(articleId){
+  return request({
+    url:`/articles/${articleId}`,
+    method:'get'
+  })
+}

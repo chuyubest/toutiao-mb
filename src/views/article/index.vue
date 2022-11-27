@@ -48,7 +48,7 @@
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div class="article-content">{{ detail.content }}无</div>
+        <div class="article-content markdown-body">{{ detail.content }}无</div>
         <van-divider>正文结束</van-divider>
       </div>
       <!-- /加载完成-文章详情 -->
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+// 引入文章正文样式
 import { getArticleDetailById } from "@/api/article";
 export default {
   name: "Article",
@@ -123,6 +124,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import url('./github-markdown.css');
 .article-container {
    /deep/ .van-nav-bar .van-icon{
       color:#fff 

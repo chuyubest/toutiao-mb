@@ -17,7 +17,9 @@ module.exports = {
         return file.indexOf('vant') !== -1 ? 37.5 : 75
       },
       // rootValue: 37.5,//html元素的字体大小
-      propList: ['*']// 配置要转换的css属性
+      propList: ['*'],// 配置要转换的css属性
+      //配置不要转换的样式资源
+      exclude:'github-markdown'
     }
   }
 }

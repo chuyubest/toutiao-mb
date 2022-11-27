@@ -6,7 +6,13 @@
 
 <script>
 export default {
-
+   name:'Article',
+   props:{
+      articleId:{
+         type:[String,Number],
+         required:true
+      }
+   }
 }
 </script>
 

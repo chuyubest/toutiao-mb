@@ -43,7 +43,8 @@ const routes = [{
   {
     path: '/article/:articleId',//动态路由
     name: 'article',
-    component: () => import('@/views/article')
+    component: () => import('@/views/article'),
+    props:true,//props解耦就是将路由参数映射到组建的props数据上
   },
 ]
 

@@ -16,3 +16,21 @@ export function getArticleDetailById(articleId){
     method:'get'
   })
 }
+//收藏文章
+//添加收藏
+export const collectArticle = (articleId)=>{
+  return request({
+    url:'/article/collections',
+    method:'post',
+    data:{
+      target:articleId
+    }
+  })
+}
+//取消收藏
+export const cancelCollect = (articleId)=>{
+  return request({
+    url:`/article/collections/${articleId}`,
+    method:'delete'
+  })
+}

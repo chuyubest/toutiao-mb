@@ -55,7 +55,13 @@
             size="small"
             @click="onFollow"
           >已关注</van-button> -->
-          <Concern class="follow-btn" :userId="detail.aut_id" :isFollowed="detail.is_followed" @updateConcern="detail.is_followed = $event" />
+          <!-- 当我们使用子组件的时候 传递的数据既要使用又要修改 可以使用v-model -->
+          <Concern
+            class="follow-btn"
+            :userId="detail.aut_id"
+            :isFollowed="detail.is_followed"
+            @updateConcern="detail.is_followed = $event"
+          />
         </van-cell>
         <!-- /用户信息 -->
 
@@ -66,6 +72,20 @@
           v-html="detail.content"
         ></div>
         <van-divider>正文结束</van-divider>
+        <!-- 底部区域 -->
+        <div class="article-bottom">
+          <van-button class="comment-btn" type="default" round size="small"
+            >写评论</van-button
+          >
+          <van-icon name="comment-o" :badge="detail.comm_count" color="#777" />
+          <CollectArticle
+            v-model="detail.is_collected"
+            :artId="detail.art_id"
+          />
+          <van-icon color="#777" name="good-job-o" />
+          <van-icon name="share-o" color="#777777"></van-icon>
+        </div>
+        <!-- /底部区域 -->
       </div>
       <!-- /加载完成-文章详情 -->
 
@@ -84,18 +104,6 @@
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
-
-    <!-- 底部区域 -->
-    <div class="article-bottom">
-      <van-button class="comment-btn" type="default" round size="small"
-        >写评论</van-button
-      >
-      <van-icon name="comment-o" :badge="detail.comm_count" color="#777" />
-      <van-icon color="#777" name="star-o" />
-      <van-icon color="#777" name="good-job-o" />
-      <van-icon name="share-o" color="#777777"></van-icon>
-    </div>
-    <!-- /底部区域 -->
   </div>
 </template>
 
@@ -103,8 +111,8 @@
 // 引入文章正文样式
 import { getArticleDetailById } from "@/api/article";
 import { ImagePreview } from "vant";
-import {addFollow,cancelFollow} from '@/api/user'
-import Concern from '@/components/concern'
+import Concern from "@/components/concern";
+import CollectArticle from "@/components/collect-article";
 export default {
   name: "Article",
   data() {
@@ -112,11 +120,12 @@ export default {
       detail: {}, //文章详情
       loading: true, //控制加载状态
       errorStatus: 0, //控制加载失败内容的显示
-      followLoading:false,//控制按钮的加载状态
+      followLoading: false, //控制按钮的加载状态
     };
   },
-  components:{
-   Concern
+  components: {
+    Concern,
+    CollectArticle,
   },
   props: {
     articleId: {
@@ -131,7 +140,6 @@ export default {
     async getArticleDetailById() {
       try {
         const result = await getArticleDetailById(this.articleId);
-        console.log(result);
         this.detail = result;
         // 获取所有img节点
         //此时获取不到 因为数据驱动视图不是立即的可使用$nextTick
@@ -151,38 +159,37 @@ export default {
       const container = this.$refs["article-content"];
       const imgs = container.querySelectorAll("img");
       const imgsSrc = [];
-      imgs.forEach((img,index) => {
+      imgs.forEach((img, index) => {
         imgsSrc.push(img.src);
         //为每个图片都添加一个点击事件
-        img.addEventListener("click", ()=> {
+        img.addEventListener("click", () => {
           ImagePreview({
             images: imgsSrc,
-            startPosition: index,//默认从第一张开始
+            startPosition: index, //默认从第一张开始
             closeable: true,
           });
         });
       });
-      console.log(imgsSrc);
     },
     //关注与取消关注用户
-   //  async onFollow(){
-   //    this.followLoading = true
-   //    try{
-   //       if(this.detail.is_followed){//已关注的话,就取消关注
-   //          await cancelFollow(this.detail.aut_id)
-   //       }else{
-   //          await addFollow(this.detail.aut_id) 
-   //       }
-   //       // 更新视图状态
-   //        this.detail.is_followed=!this.detail.is_followed
-   //    }catch(error){
-   //       if(error.response.status === 400){
-   //       this.$toast('不能关注自己')
-   //       }
-   //       this.$toast('操作失败,请重试!')
-   //    }
-   //    this.followLoading = false
-   //  }
+    //  async onFollow(){
+    //    this.followLoading = true
+    //    try{
+    //       if(this.detail.is_followed){//已关注的话,就取消关注
+    //          await cancelFollow(this.detail.aut_id)
+    //       }else{
+    //          await addFollow(this.detail.aut_id)
+    //       }
+    //       // 更新视图状态
+    //        this.detail.is_followed=!this.detail.is_followed
+    //    }catch(error){
+    //       if(error.response.status === 400){
+    //       this.$toast('不能关注自己')
+    //       }
+    //       this.$toast('操作失败,请重试!')
+    //    }
+    //    this.followLoading = false
+    //  }
   },
 };
 </script>

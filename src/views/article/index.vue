@@ -36,19 +36,25 @@
             {{ detail.pubdate | relativeTime }}
           </div>
           <van-button
+            v-if="!detail.is_followed"
             class="follow-btn"
             type="info"
             color="#3296fa"
             round
             size="small"
             icon="plus"
+            :loading='followLoading'
+            @click="onFollow"
             >关注</van-button
           >
-          <!-- <van-button
+          <van-button
+            v-else
             class="follow-btn"
             round
+            :loading='followLoading'
             size="small"
-          >已关注</van-button> -->
+            @click="onFollow"
+          >已关注</van-button>
         </van-cell>
         <!-- /用户信息 -->
 
@@ -96,6 +102,7 @@
 // 引入文章正文样式
 import { getArticleDetailById } from "@/api/article";
 import { ImagePreview } from "vant";
+import {addFollow,cancelFollow} from '@/api/user'
 export default {
   name: "Article",
   data() {
@@ -103,6 +110,7 @@ export default {
       detail: {}, //文章详情
       loading: true, //控制加载状态
       errorStatus: 0, //控制加载失败内容的显示
+      followLoading:false,//控制按钮的加载状态
     };
   },
   props: {
@@ -151,6 +159,25 @@ export default {
       });
       console.log(imgsSrc);
     },
+    //关注与取消关注用户
+    async onFollow(){
+      this.followLoading = true
+      try{
+         if(this.detail.is_followed){//已关注的话,就取消关注
+            await cancelFollow(this.detail.aut_id)
+         }else{
+            await addFollow(this.detail.aut_id) 
+         }
+         // 更新视图状态
+          this.detail.is_followed=!this.detail.is_followed
+      }catch(error){
+         if(error.response.status === 400){
+         this.$toast('不能关注自己')
+         }
+         this.$toast('操作失败,请重试!')
+      }
+      this.followLoading = false
+    }
   },
 };
 </script>

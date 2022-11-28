@@ -1,7 +1,12 @@
 <template>
   <div class="article-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-nav-bar" left-arrow title="黑马头条"  @click-left="$router.back()"></van-nav-bar>
+    <van-nav-bar
+      class="page-nav-bar"
+      left-arrow
+      title="黑马头条"
+      @click-left="$router.back()"
+    ></van-nav-bar>
     <!-- /导航栏 -->
 
     <div class="main-wrap">
@@ -12,7 +17,7 @@
       <!-- /加载中 -->
 
       <!-- 加载完成-文章详情 -->
-      <div class="article-detail" v-else-if="detail.title" >
+      <div class="article-detail" v-else-if="detail.title">
         <!-- 文章标题 -->
         <h1 class="article-title">{{ detail.title }}</h1>
         <!-- /文章标题 -->
@@ -48,7 +53,11 @@
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div class="article-content markdown-body">{{ detail.content }}无</div>
+        <div
+          class="article-content markdown-body"
+          ref="article-content"
+          v-html="detail.content"
+        ></div>
         <van-divider>正文结束</van-divider>
       </div>
       <!-- /加载完成-文章详情 -->
@@ -86,13 +95,14 @@
 <script>
 // 引入文章正文样式
 import { getArticleDetailById } from "@/api/article";
+import { ImagePreview } from "vant";
 export default {
   name: "Article",
   data() {
     return {
       detail: {}, //文章详情
-      loading:true,//控制加载状态
-      errorStatus:0,//控制加载失败内容的显示
+      loading: true, //控制加载状态
+      errorStatus: 0, //控制加载失败内容的显示
     };
   },
   props: {
@@ -110,25 +120,47 @@ export default {
         const result = await getArticleDetailById(this.articleId);
         console.log(result);
         this.detail = result;
+        // 获取所有img节点
+        //此时获取不到 因为数据驱动视图不是立即的可使用$nextTick
+        this.$nextTick(() => {
+          this.loadImage();
+        });
       } catch (error) {
-         if(error.response.status === 404){
-            this.errorStatus = 404
-         }
-         console.log('获取失败',error);
+        if (error.response.status === 404) {
+          this.errorStatus = 404;
+        }
+        console.log("获取失败", error);
       }
       //无论发送请求是否成功都要关闭loading
-      this.loading = false
+      this.loading = false;
+    },
+    loadImage() {
+      const container = this.$refs["article-content"];
+      const imgs = container.querySelectorAll("img");
+      const imgsSrc = [];
+      imgs.forEach((img,index) => {
+        imgsSrc.push(img.src);
+        //为每个图片都添加一个点击事件
+        img.addEventListener("click", ()=> {
+          ImagePreview({
+            images: imgsSrc,
+            startPosition: index,//默认从第一张开始
+            closeable: true,
+          });
+        });
+      });
+      console.log(imgsSrc);
     },
   },
 };
 </script>
 
 <style scoped lang="less">
-@import url('./github-markdown.css');
+@import url("./github-markdown.css");
 .article-container {
-   /deep/ .van-nav-bar .van-icon{
-      color:#fff 
-   }
+  /deep/ .van-nav-bar .van-icon {
+    color: #fff;
+  }
   .main-wrap {
     position: fixed;
     left: 0;

@@ -35,7 +35,7 @@
           <div slot="label" class="publish-date">
             {{ detail.pubdate | relativeTime }}
           </div>
-          <van-button
+          <!-- <van-button
             v-if="!detail.is_followed"
             class="follow-btn"
             type="info"
@@ -54,7 +54,8 @@
             :loading='followLoading'
             size="small"
             @click="onFollow"
-          >已关注</van-button>
+          >已关注</van-button> -->
+          <Concern class="follow-btn" :userId="detail.aut_id" :isFollowed="detail.is_followed" @updateConcern="detail.is_followed = $event" />
         </van-cell>
         <!-- /用户信息 -->
 
@@ -103,6 +104,7 @@
 import { getArticleDetailById } from "@/api/article";
 import { ImagePreview } from "vant";
 import {addFollow,cancelFollow} from '@/api/user'
+import Concern from '@/components/concern'
 export default {
   name: "Article",
   data() {
@@ -112,6 +114,9 @@ export default {
       errorStatus: 0, //控制加载失败内容的显示
       followLoading:false,//控制按钮的加载状态
     };
+  },
+  components:{
+   Concern
   },
   props: {
     articleId: {
@@ -160,24 +165,24 @@ export default {
       console.log(imgsSrc);
     },
     //关注与取消关注用户
-    async onFollow(){
-      this.followLoading = true
-      try{
-         if(this.detail.is_followed){//已关注的话,就取消关注
-            await cancelFollow(this.detail.aut_id)
-         }else{
-            await addFollow(this.detail.aut_id) 
-         }
-         // 更新视图状态
-          this.detail.is_followed=!this.detail.is_followed
-      }catch(error){
-         if(error.response.status === 400){
-         this.$toast('不能关注自己')
-         }
-         this.$toast('操作失败,请重试!')
-      }
-      this.followLoading = false
-    }
+   //  async onFollow(){
+   //    this.followLoading = true
+   //    try{
+   //       if(this.detail.is_followed){//已关注的话,就取消关注
+   //          await cancelFollow(this.detail.aut_id)
+   //       }else{
+   //          await addFollow(this.detail.aut_id) 
+   //       }
+   //       // 更新视图状态
+   //        this.detail.is_followed=!this.detail.is_followed
+   //    }catch(error){
+   //       if(error.response.status === 400){
+   //       this.$toast('不能关注自己')
+   //       }
+   //       this.$toast('操作失败,请重试!')
+   //    }
+   //    this.followLoading = false
+   //  }
   },
 };
 </script>

@@ -34,3 +34,22 @@ export const cancelCollect = (articleId)=>{
     method:'delete'
   })
 }
+
+//文章点赞
+export function likeArticle(artId){
+  return request({
+    url:'/article/likings',
+    method:'post',
+    data:{
+      target:artId
+    }
+  })
+}
+
+//取消点赞
+export const cancelLike = (articleId)=>{
+  return request({
+    url:`/article/likings/${articleId}`,
+    method:'delete'
+  })
+}

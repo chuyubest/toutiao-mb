@@ -82,7 +82,7 @@
             v-model="detail.is_collected"
             :artId="detail.art_id"
           />
-          <van-icon color="#777" name="good-job-o" />
+          <LikeArticle :articleId="detail.art_id" :attitude="detail.attitude"/>
           <van-icon name="share-o" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
@@ -113,6 +113,7 @@ import { getArticleDetailById } from "@/api/article";
 import { ImagePreview } from "vant";
 import Concern from "@/components/concern";
 import CollectArticle from "@/components/collect-article";
+import LikeArticle from '@/components/like-article'
 export default {
   name: "Article",
   data() {
@@ -126,6 +127,7 @@ export default {
   components: {
     Concern,
     CollectArticle,
+    LikeArticle
   },
   props: {
     articleId: {

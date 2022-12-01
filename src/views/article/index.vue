@@ -72,6 +72,7 @@
           v-html="detail.content"
         ></div>
         <van-divider>正文结束</van-divider>
+        <CommentList :source="detail.art_id"/>
         <!-- 底部区域 -->
         <div class="article-bottom">
           <van-button class="comment-btn" type="default" round size="small"
@@ -114,6 +115,7 @@ import { ImagePreview } from "vant";
 import Concern from "@/components/concern";
 import CollectArticle from "@/components/collect-article";
 import LikeArticle from '@/components/like-article'
+import CommentList from './components/comment-list.vue'
 export default {
   name: "Article",
   data() {
@@ -127,7 +129,8 @@ export default {
   components: {
     Concern,
     CollectArticle,
-    LikeArticle
+    LikeArticle,
+    CommentList
   },
   props: {
     articleId: {

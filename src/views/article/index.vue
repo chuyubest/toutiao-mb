@@ -78,7 +78,7 @@
           <van-button class="comment-btn" type="default" round size="small"
             >写评论</van-button
           >
-          <van-icon name="comment-o" :badge="detail.comm_count" color="#777" />
+          <van-icon name="comment-o" :badge="totalCommentCount" color="#777" />
           <CollectArticle
             v-model="detail.is_collected"
             :artId="detail.art_id"
@@ -124,6 +124,7 @@ export default {
       loading: true, //控制加载状态
       errorStatus: 0, //控制加载失败内容的显示
       followLoading: false, //控制按钮的加载状态
+      totalCommentCount:0,//评论数量
     };
   },
   components: {

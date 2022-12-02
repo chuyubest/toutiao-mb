@@ -7,7 +7,7 @@
     @error="error"
     error-text="加载失败,请点击重试!"
   >
-    <CommentItem v-for="item in list" :key="item.com_id"  :comment="item" />
+    <CommentItem v-for="item in list" :key="item.com_id"  :comment="item" @updateLike="item.is_liking = $event"/>
   </van-list>
 </template>
 

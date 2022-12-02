@@ -8,3 +8,23 @@ export function getCommentList(params){
         params
     })
 }
+
+//对评论点赞
+export function addLike(target){
+    return request({
+        url:'/comment/likings',
+        method:'post',
+        data:{
+            target
+        }
+    })
+}
+
+//取消点赞
+export function cancelLike(commentId){
+    return request({
+        url:`/comment/likings/${commentId}`,
+        method:'delete',
+        
+    })
+}

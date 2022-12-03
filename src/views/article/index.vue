@@ -72,10 +72,15 @@
           v-html="detail.content"
         ></div>
         <van-divider>正文结束</van-divider>
-        <CommentList :source="detail.art_id"/>
+        <CommentList :source="detail.art_id" :list="commentList"/>
         <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-button class="comment-btn" type="default" round size="small"
+          <van-button 
+          class="comment-btn" 
+          type="default" 
+          round 
+          size="small"
+          @click="isPopShow = true"
             >写评论</van-button
           >
           <van-icon name="comment-o" :badge="totalCommentCount" color="#777" />
@@ -87,7 +92,16 @@
           <van-icon name="share-o" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
+
+        <!-- 发布评论 -->
+        <van-popup 
+        v-model="isPopShow" 
+        position="bottom" 
+        >
+          <CommentPost :targetId="detail.art_id" @update-data="postSuccess"/>
+        </van-popup >
       </div>
+
       <!-- /加载完成-文章详情 -->
 
       <!-- 加载失败：404 -->
@@ -116,6 +130,7 @@ import Concern from "@/components/concern";
 import CollectArticle from "@/components/collect-article";
 import LikeArticle from '@/components/like-article'
 import CommentList from './components/comment-list.vue'
+import CommentPost from './components/comment-post.vue'
 export default {
   name: "Article",
   data() {
@@ -125,13 +140,16 @@ export default {
       errorStatus: 0, //控制加载失败内容的显示
       followLoading: false, //控制按钮的加载状态
       totalCommentCount:0,//评论数量
+      isPopShow:false,//控制发表评论弹出层的状态
+      commentList:[],//评论列表
     };
   },
   components: {
     Concern,
     CollectArticle,
     LikeArticle,
-    CommentList
+    CommentList,
+    CommentPost
   },
   props: {
     articleId: {
@@ -196,6 +214,12 @@ export default {
     //    }
     //    this.followLoading = false
     //  }
+
+    postSuccess(new_comment){
+      //关闭弹层
+      this.isPopShow = false
+      this.commentList.unshift(new_comment)
+    }
   },
 };
 </script>

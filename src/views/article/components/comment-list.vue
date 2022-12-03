@@ -18,7 +18,7 @@ export default {
   name: "CommentList",
   data() {
     return {
-      list: [],
+    //   list: [],
       loading: false,
       finished: false,
       offset: null, //用于获取下一页数据的标记
@@ -33,6 +33,10 @@ export default {
       type: [Number, String, Object],
       required: true,
     },
+    list:{
+        type:Array,
+        default:()=>[]
+    }
   },
   created() {
     this.onLoad();

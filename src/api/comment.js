@@ -28,3 +28,12 @@ export function cancelLike(commentId){
         
     })
 }
+
+//添加评论或评论回复
+export function addComment(data){
+    return request({
+        url:'/comments',
+        method:'post',
+        data
+    })
+}

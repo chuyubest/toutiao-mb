@@ -1,13 +1,21 @@
 <template>
+  <!-- 默认情况 只有list在可视范围内才会检查滚动位置触发加载 -->
   <van-list
     v-model="loading"
     :finished="finished"
     finished-text="没有更多了"
     @load="onLoad"
     @error="error"
+    :immediate-check="false"
     error-text="加载失败,请点击重试!"
   >
-    <CommentItem v-for="item in list" :key="item.com_id" @replyClick="$emit('replyClick',$event)"  :comment="item" @updateLike="item.is_liking = $event"/>
+    <CommentItem
+      v-for="item in list"
+      :key="item.com_id"
+      @replyClick="$emit('replyClick', $event)"
+      :comment="item"
+      @updateLike="item.is_liking = $event"
+    />
   </van-list>
 </template>
 
@@ -18,7 +26,7 @@ export default {
   name: "CommentList",
   data() {
     return {
-    //   list: [],
+      //   list: [],
       loading: false,
       finished: false,
       offset: null, //用于获取下一页数据的标记
@@ -33,20 +41,22 @@ export default {
       type: [Number, String, Object],
       required: true,
     },
-    list:{
-        type:Array,
-        default:()=>[]
+    list: {
+      type: Array,
+      default: () => [],
     },
-    type:{
-      type:String,
-      default:'a',
+    type: {
+      type: String,
+      default: "a",
       //自定义prop数据验证
-      validator(value){
-        return ['a','c'].includes(value)
-      }
-    }
+      validator(value) {
+        return ["a", "c"].includes(value);
+      },
+    },
   },
   created() {
+    //手动加载onload的时候 初始loading不会加载
+    this.loading = true;
     this.onLoad();
   },
   methods: {

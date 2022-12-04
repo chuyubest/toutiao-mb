@@ -72,15 +72,15 @@
           v-html="detail.content"
         ></div>
         <van-divider>正文结束</van-divider>
-        <CommentList :source="detail.art_id" :list="commentList"/>
+        <CommentList :source="detail.art_id" :list="commentList" @replyClick="onReplyClick" />
         <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-button 
-          class="comment-btn" 
-          type="default" 
-          round 
-          size="small"
-          @click="isPopShow = true"
+          <van-button
+            class="comment-btn"
+            type="default"
+            round
+            size="small"
+            @click="isPopShow = true"
             >写评论</van-button
           >
           <van-icon name="comment-o" :badge="totalCommentCount" color="#777" />
@@ -88,18 +88,15 @@
             v-model="detail.is_collected"
             :artId="detail.art_id"
           />
-          <LikeArticle :articleId="detail.art_id" :attitude="detail.attitude"/>
+          <LikeArticle :articleId="detail.art_id" :attitude="detail.attitude" />
           <van-icon name="share-o" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
 
         <!-- 发布评论 -->
-        <van-popup 
-        v-model="isPopShow" 
-        position="bottom" 
-        >
-          <CommentPost :targetId="detail.art_id" @update-data="postSuccess"/>
-        </van-popup >
+        <van-popup v-model="isPopShow" position="bottom">
+          <CommentPost :targetId="detail.art_id" @update-data="postSuccess" />
+        </van-popup>
       </div>
 
       <!-- /加载完成-文章详情 -->
@@ -119,6 +116,11 @@
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
+
+    <!-- 评论回复弹出层 -->
+    <van-popup v-model="isReplyShow" position="bottom" style="height:100%">
+      <CommentReply :currentComment="currentComment" @closePop='isReplyShow = false'/>
+    </van-popup>
   </div>
 </template>
 
@@ -128,9 +130,10 @@ import { getArticleDetailById } from "@/api/article";
 import { ImagePreview } from "vant";
 import Concern from "@/components/concern";
 import CollectArticle from "@/components/collect-article";
-import LikeArticle from '@/components/like-article'
-import CommentList from './components/comment-list.vue'
-import CommentPost from './components/comment-post.vue'
+import LikeArticle from "@/components/like-article";
+import CommentList from "./components/comment-list.vue";
+import CommentPost from "./components/comment-post.vue";
+import CommentReply from './components/comment-reply.vue'
 export default {
   name: "Article",
   data() {
@@ -139,9 +142,11 @@ export default {
       loading: true, //控制加载状态
       errorStatus: 0, //控制加载失败内容的显示
       followLoading: false, //控制按钮的加载状态
-      totalCommentCount:0,//评论数量
-      isPopShow:false,//控制发表评论弹出层的状态
-      commentList:[],//评论列表
+      totalCommentCount: 0, //评论数量
+      isPopShow: false, //控制发表评论弹出层的状态
+      commentList: [], //评论列表
+      isReplyShow:false,//控制评论回复弹出层
+      currentComment:{},//当前点击评论回复的评论项
     };
   },
   components: {
@@ -149,7 +154,8 @@ export default {
     CollectArticle,
     LikeArticle,
     CommentList,
-    CommentPost
+    CommentPost,
+    CommentReply
   },
   props: {
     articleId: {
@@ -215,10 +221,16 @@ export default {
     //    this.followLoading = false
     //  }
 
-    postSuccess(new_comment){
+    postSuccess(new_comment) {
       //关闭弹层
-      this.isPopShow = false
-      this.commentList.unshift(new_comment)
+      this.isPopShow = false;
+      this.commentList.unshift(new_comment);
+    },
+    // 点击评论回复按钮的回调
+    onReplyClick(comment){
+      //显示弹出层
+      this.isReplyShow = true
+      this.currentComment = comment
     }
   },
 };

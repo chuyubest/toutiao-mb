@@ -30,6 +30,12 @@ export default {
       message: "",
     };
   },
+  inject:{
+    articleId:{
+        type:[Object,String,Number],
+        required:true
+    }
+  },
   computed: {},
   watch: {},
   created() {},
@@ -43,9 +49,9 @@ export default {
           duration:0
         });
         const { new_obj } = await addComment({
-          target: this.targetId, //评论的文章id
+          target: this.targetId, //评论的文章id或者评论id
           content: this.message, //评论的内容
-          //art_id:null,//对评论回复需要此参数值, 代表所属文章id, 对文章评论无需此参数
+          art_id:this.articleId || null,//对评论回复需要此参数值, 代表所属文章id, 对文章评论无需此参数
         });
         console.log(new_obj);
         //关闭弹出层

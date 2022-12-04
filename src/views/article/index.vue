@@ -158,6 +158,12 @@ export default {
     CommentPost,
     CommentReply
   },
+  //依赖注入 可用于给子孙组件提供数据
+  provide:function(){
+    return {
+      articleId:this.articleId
+    }
+  },
   props: {
     articleId: {
       type: [String, Number],

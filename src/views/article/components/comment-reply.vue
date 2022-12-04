@@ -8,7 +8,7 @@
     <CommentItem  :comment="currentComment"/>
     <!-- 评论的回复列表 -->
     <van-cell title="全部回复"></van-cell>
-    <CommentList :source="currentComment.com_id" type="c" :list="list"/>
+    <CommentList :source="currentComment.com_id" type="c" />
   </div>
 </template>
 

@@ -118,8 +118,9 @@
     </div>
 
     <!-- 评论回复弹出层 -->
+    <!-- 特点:弹出层是懒渲染只有在第一次显示的时候才会渲染里面的内容 之后关闭都是在切换内容的显示与隐藏 -->
     <van-popup v-model="isReplyShow" position="bottom" style="height:100%">
-      <CommentReply :currentComment="currentComment" @closePop='isReplyShow = false'/>
+      <CommentReply v-if="isReplyShow" :currentComment="currentComment" @closePop='isReplyShow = false'/>
     </van-popup>
   </div>
 </template>
@@ -231,7 +232,7 @@ export default {
       //显示弹出层
       this.isReplyShow = true
       this.currentComment = comment
-    }
+    },
   },
 };
 </script>

@@ -46,6 +46,11 @@ const routes = [{
     component: () => import('@/views/article'),
     props:true,//props解耦就是将路由参数映射到组建的props数据上
   },
+  {
+    path: '/user/profile',
+    name: 'userProfile',
+    component: () => import('@/views/user-profile'),
+  },
 ]
 
 const router = new VueRouter({

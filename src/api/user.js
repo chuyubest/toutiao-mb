@@ -48,3 +48,11 @@ export function cancelFollow(userId){
   })
 }
 
+//获取用户个人资料
+export function getUserProfile(){
+  return request({
+    url:'/user/profile',
+    method:'get'
+  })
+}
+

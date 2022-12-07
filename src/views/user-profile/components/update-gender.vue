@@ -27,6 +27,11 @@ export default {
     //点击确定按钮
     async onConfirm(value, index) {
       try {
+        this.$toast.loading({
+            message:'保存中...',
+            duration:0,
+            forbidClick:true
+        })
         // 发请求,修改性别 index:0->男 1=>女
         await updateUserProfile({ gender: index });
         this.$toast('修改成功!')

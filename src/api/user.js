@@ -55,4 +55,13 @@ export function getUserProfile(){
     method:'get'
   })
 }
+//修改个人信息
+export function updateUserProfile(data){
+  return request({
+    url:'/user/profile',
+    method:'patch',
+    data
+  })
+}
+
 
